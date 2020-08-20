@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 // This program will compute the hypotenuse of a right triangle
 // using the Pythagorean theorem: 
 //           (a*a) + (b*b) = (c*c)
@@ -17,40 +19,51 @@
 
     Caveats:    If non-numeric characters are given for arguments one or two the program will exit 
                 with error code 2 (EXIT_INVALID_ARG_TYPE).
+                If on the first side a valid number is given and then is followed by a space and text, the text will
+                be used when asking for side 2.          
+                If on the last side when giving input, if a number is given and is then followed by a space. All
+                text after that space will be ignored ex. (353 I will be ignored!)
 
     Date:       8/20/2020
     Author:     Chase Roth
     Version:    1.0
 */
 public class Hypot {
-    // Numeric code for invalid number of arguments
-    private static final int EXIT_INVALID_NUM_ARGS = 1;
+    // Arguments were given in a invalid format
+    static final int EXIT_INVALID_ARG_FORMAT = 1;
     // Numeric code for invlaid argument type given (not numeric)
-    private static final int EXIT_INVALID_ARG_TYPE = 2;
+    static final int EXIT_INVALID_ARG_TYPE = 2;    
+    // Number of arguments our program will take in the console
+    static final byte ARGUMENT_COUNT = 2;
 
-    public static void main(String [] args) { 
-        // Variable Initialization
+    public static void main(String [] args) {       
         double hypotenuse;
-        double d1 = 0;
-        double d2 = 0;
+        // Contains both our 'a' side and 'b' side of the right triangle
+        double[] sides = new double[ARGUMENT_COUNT];        
+        // Scanner for getting user input
+        Scanner scanner = new Scanner(System.in);
+        
+        // Collecting all arguments
+        for (byte i = 0; i < ARGUMENT_COUNT; i++) {
+            System.out.print("Side " + (i + 1) + " length: ");
+            // Need to get the line because other wise people can hide parameters behind spaces
+            // This become even more of a pain since Scanner doesn't have a peek function
+            String nextStr = scanner.nextLine();           
 
-        // Verify that two arguments were entered on the command line.
-        if (args.length != 2) {
-            System.out.println("You need to enter two arguments.");
-            System.exit(EXIT_INVALID_NUM_ARGS);
+            // Parse given argument
+            try {
+                sides[i] = Double.parseDouble(nextStr);
+            }
+            catch (NumberFormatException nfe) {
+                System.out.println("Invalid argument type given. The argument " + nextStr + " is not a number.");
+                System.exit(EXIT_INVALID_ARG_TYPE);
+            }
         }
 
-        // TryParse the provided arguments
-        try {
-            d1 = Double.parseDouble(args[0]);
-            d2 = Double.parseDouble((args[1]));            
-        }
-        catch (NumberFormatException ex) {
-            System.out.println("Arguments need to be numbers.");
-            System.exit(EXIT_INVALID_ARG_TYPE);
-        }
+        // At this point we are done getting input so close the scanner
+        scanner.close();                                
             
-        hypotenuse = Math.sqrt(((d1 * d1) + (d2 * d2)));
-        System.out.print("The hypotenuse of a right triangle with sides of " + d1  + " and " + d2 + " is " + hypotenuse);
+        hypotenuse = Math.sqrt(((sides[0] * sides[0]) + (sides[1] * sides[1])));
+        System.out.print("The hypotenuse of a right triangle with sides of " + sides[0]  + " and " + sides[1] + " is " + hypotenuse);
     }
 }
