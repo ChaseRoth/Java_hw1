@@ -44,15 +44,15 @@ public class Hypot {
         Scanner scanner = new Scanner(System.in);
         
         // Collecting all arguments
-        for (byte i = 0; i < ARGUMENT_COUNT; i++) {
-            System.out.print("Side " + (i + 1) + " length: ");
+        for (byte side = 0; side < ARGUMENT_COUNT; side++) {
+            System.out.print("Side " + (side + 1) + " length: ");
             // Need to get the line because other wise people can hide parameters behind spaces
             // This become even more of a pain since Scanner doesn't have a peek function
             String nextStr = scanner.nextLine();           
 
             // Parse given argument
             try {
-                sides[i] = Double.parseDouble(nextStr);
+                sides[side] = Double.parseDouble(nextStr);
             }
             catch (NumberFormatException nfe) {
                 System.out.println("Invalid argument type given. The argument " + nextStr + " is not a number.");
